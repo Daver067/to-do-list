@@ -1,3 +1,25 @@
+@font-face {
+  font-family: "muktaregular";
+  src: url("../src/fonts/mukta-regular-webfont.woff2") format("woff2"),
+    url("../src/fonts/mukta-regular-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "macondoregular";
+  src: url("../src/fonts/macondo-regular-webfont.woff2") format("woff2"),
+    url("../src/fonts/macondo-regular-webfont.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --priority0to3: green;
+  --priority4to6: orange;
+  --priority7to9: red;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -5,23 +27,28 @@
 
 #container {
   display: grid;
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  min-width: 100vw;
+  height: 100%;
+  min-height: 100vh;
   grid-template-columns: 1fr 4.5fr;
-  grid-template-rows: 0.3fr 5fr 0.3fr;
+  grid-template-rows: 0.6fr 5fr 0.3fr;
 }
 
 .header {
-  grid-area: 1/1/2/3;
+  grid-area: 1/2/2/3;
   background-color: #82b5d3;
   box-shadow: 0px 0px 10px 1px #888888;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: "macondoregular";
 }
-
+.caption {
+  font-size: 2em;
+}
 .nav {
-  grid-area: 2/1/3/2;
+  grid-area: 1/1/3/2;
   background-color: #e2e8f0;
   box-shadow: inset 0px 0px 10px 1px #888888;
   display: flex;
@@ -31,8 +58,21 @@
   padding: 10%;
 }
 
+.project-shortcut > div > img {
+  margin-bottom: -5px;
+}
+
+.project-shortcut > div {
+  display: flex;
+  justify-content: space-between;
+}
+
 .display {
   grid-area: 2/2/3/3;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.8fr 5fr;
+  background-color: #f3eded;
 }
 
 .footer {
@@ -62,7 +102,7 @@
 .to-do-shortcut {
   font-size: 1rem;
   font-weight: lighter;
-  color: #087a71;
+  color: var(--priority4to6);
   border: 0.5px black solid;
   box-shadow: inset 0px 0px 10px 1px #888888;
   border-radius: 8px;
@@ -76,4 +116,105 @@
 .to-do-shortcut:hover {
   background-color: #ccd3dd;
   cursor: pointer;
+}
+
+.to-do-display {
+  height: 300px;
+  width: 100%;
+  background-color: white;
+  box-sizing: border-box;
+  padding: 15px 30px 15px 30px;
+  box-shadow: 2px 3px 4px 1px rgb(0 0 0 / 50%);
+  border-left: var(--priority4to6) solid 8px;
+  border-radius: 4px;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 4fr 0.75fr;
+}
+
+.project-display {
+  grid-area: 1/1/2/2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.project-display-header {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  font-size: 3em;
+  text-decoration: underline;
+  font-family: "macondoregular";
+}
+
+.project-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+#rmProject {
+  align-self: flex-end;
+  width: 115px;
+  height: 2em;
+  background-color: rgb(243, 135, 135);
+  border-radius: 8px;
+  border: red solid 1px;
+  margin-right: 20px;
+}
+
+.project-buttons > button {
+  height: 2em;
+  font-size: 1.25em;
+  background-color: #9cddac;
+  border-radius: 8px;
+}
+.project-buttons > button:hover {
+  cursor: pointer;
+  background-color: #7fda96;
+}
+
+.display-to-do-display {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: repeat(2, 300px);
+  gap: 10px;
+  font-family: "muktaregular";
+  padding: 10px;
+}
+
+.to-do-display > h1 {
+  align-self: center;
+  justify-self: center;
+  margin-top: -5px;
+  margin-bottom: 5px;
+}
+.to-do-display > ol {
+  line-height: 1.25;
+  color: #757474;
+}
+
+.images {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+.priority {
+  font-weight: bolder;
+}
+
+.priority-icons {
+  display: inline-flex;
+  justify-content: space-between;
+}
+
+img {
+  height: 25px;
+  width: 25px;
+}
+
+img:hover {
+  cursor: pointer;
+  background-color: #f3eded;
 }
