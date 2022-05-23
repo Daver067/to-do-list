@@ -1,0 +1,17 @@
+class toDo {
+  constructor(name, steps, priority) {
+    (this.name = name), (this.steps = steps), (this.priority = priority);
+  }
+}
+let mowLawn = new toDo(
+  "Mow Lawn",
+  ["Prep Lawn Mower", "Mow Lawn", "Dispose of Grass", "Clean Up"],
+  6
+);
+let general = [mowLawn, mowLawn, mowLawn];
+
+function addToDo(one, two, three) {
+  general.push(new toDo(one, two, three));
+}
+
+export { general, addToDo };
