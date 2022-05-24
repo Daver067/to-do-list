@@ -1,0 +1,44 @@
+import { newProjectModule } from "./renderPage";
+
+//adds event listener to New Project button in Nav Bar
+function newProjectButton() {
+  const btn = document.getElementById("newProject");
+  btn.addEventListener("click", () => {
+    newProjectModule();
+  });
+}
+
+//clicking on New To-Do Button
+function newToDoButton() {
+  const btn = document.getElementById("newToDo");
+  btn.addEventListener("click", () => {
+    alert("clicked todo");
+  });
+}
+
+//listener for clicking on OK when New Project Module is up
+
+//Cancel for any module
+function cancelBtn() {
+  const cancelBtn = document.getElementById("cancel");
+  cancelBtn.addEventListener("click", () => {
+    const body = document.querySelector("body");
+    const module = document.querySelector(".module");
+    const moduleBackground = document.querySelector(".module-background");
+    body.removeChild(module);
+    body.removeChild(moduleBackground);
+  });
+}
+
+//adding listeners to page load
+function allListeners() {
+  newProjectButton();
+  newToDoButton();
+}
+
+export { allListeners, cancelBtn };
+/* 
+Alllisteners goed to render page
+cancelBtn goes to render page 
+
+*/

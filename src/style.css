@@ -25,7 +25,7 @@
   padding: 0;
 }
 
-#container {
+.container {
   display: grid;
   width: 100%;
   min-width: 100vw;
@@ -217,4 +217,63 @@ img {
 img:hover {
   cursor: pointer;
   background-color: #f3eded;
+}
+
+.module {
+  padding: 1em;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 1fr 2fr 0.5fr 0.5fr;
+  position: absolute;
+  width: 50vw;
+  height: 50vh;
+  background-color: black;
+  color: white;
+  left: 25vw;
+  top: 25vh;
+}
+
+.module-background {
+  position: absolute;
+  width: 100vw;
+  height: 100vh;
+  background-color: white;
+  opacity: 0.9;
+  top: 0;
+  left: 0;
+}
+
+.module-name {
+  font-size: 2em;
+  grid-area: 1/1/2/2;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.module-name input {
+  height: 3em;
+  padding-left: 10px;
+}
+
+.module-steps {
+  grid-area: 2/1/3/2;
+  display: flex;
+}
+
+.module-priority {
+  grid-area: 3/1/4/2;
+  display: flex;
+}
+
+.module-buttons {
+  grid-area: 4/1/5/2;
+  display: grid;
+  grid-template-columns: 1fr 0.75fr 1fr;
+  grid-template-rows: 1fr;
+}
+
+.module-buttons button {
+  width: 100%;
+  height: 100%;
 }
