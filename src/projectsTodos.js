@@ -5,9 +5,9 @@ class toDo {
 }
 
 class Project {
-  constructor(name, toDo1, toDo2, toDo3) {
+  constructor(name) {
     this.name = name;
-    this.toDos = [toDo1, toDo2, toDo3];
+    this.toDos = [];
   }
 
   addToDo = (newTodo) => {
@@ -21,17 +21,14 @@ let mowLawn = new toDo(
   6
 );
 
-//function to add a new to-do to a project
-function addToDo(projectToAddTo, toDoName, toDoSteps, toDoPriority) {
-  projectToAddTo.push(new toDo(toDoName, toDoSteps, toDoPriority));
-}
-
-//function to create a new project
-function createNewProject(name) {
-  const NewProject = new Project(name);
-  projects.push(NewProject);
-}
-let general = new Project("general", mowLawn, mowLawn, mowLawn);
+let general = new Project("general");
+general.addToDo(mowLawn);
+general.addToDo(mowLawn);
+general.addToDo(mowLawn);
 let projects = [];
 
-export { addToDo, createNewProject, projects, general };
+export { general, projects, toDo, Project };
+/*
+toDo goes to eventListeners
+Project goes to eventListeners
+*/

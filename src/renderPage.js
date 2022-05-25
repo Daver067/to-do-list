@@ -1,5 +1,4 @@
-import { allListeners, cancelBtn } from "./eventListeners,js";
-import { projects, general } from "./projectsTodos";
+import { allListeners } from "./eventListeners,js";
 
 function createNewElement(type, addClass, innerHTML) {
   const domElement = document.createElement(type);
@@ -30,6 +29,16 @@ function createNav() {
   return nav;
 }
 
+//creates Display
+function createDisplay() {
+  const display = createNewElement(
+    "div",
+    "display",
+    '<div class="project-display"><h1 class="project-display-header">General</h1><button id="rmProject">Delete Project</button></div><div class="display-to-do-display"><div class="to-do-display"><h1 class="to-do-name">Mow Lawn</h1><ol class="to-do-steps"><li>Prep Lawn Mower</li><li>Mow Lawn</li><li>Dispose of grass</li><li>Clean Up</li></ol><div class="priority-icons"><div class="priority">Priority - 6</div><div class="images"><img src="../src/images/check.svg" alt="check" /><img src="../src/images/edit.svg" alt="edit" /><img src="../src/images/delete.svg" alt="delete" /></div></div></div>'
+  );
+  return display;
+}
+
 //creates footer and adds text
 function createFooter() {
   const footer = createNewElement(
@@ -40,68 +49,18 @@ function createFooter() {
   return footer;
 }
 
-//makes New Project module
-function newProjectModule() {
-  const body = document.querySelector("body");
-  body.appendChild(createNewElement("div", "module-background", ""));
-
-  const module = createNewElement("div", "module", "");
-  body.appendChild(module);
-  module.appendChild(
-    createNewElement(
-      "div",
-      "module-name",
-      '<label for="name">Project Name:</label>  <input type="text" name="name" id="name" />'
-    )
-  );
-  module.appendChild(
-    createNewElement(
-      "div",
-      "module-buttons",
-      '<button id="ok">OK</button><div></div><button id="cancel">CANCEL</button>'
-    )
-  );
-  cancelBtn();
-}
-
 //renders the page, export this function to index to render page
 function renderPage() {
   const container = createNewElement("div", "container", "");
   document.querySelector("body").appendChild(container);
   container.appendChild(createHeader());
+  container.appendChild(createDisplay());
   container.appendChild(createFooter());
   container.appendChild(createNav());
   allListeners();
-  loopProjects();
 }
 
-function loopProjects() {
-  const allProjects = projects;
-  allProjects.push(general);
-  console.log(allProjects);
-}
-
-export { renderPage, newProjectModule };
+export { renderPage };
 //render page used in index.html
 //newProjectModule used in eventListeners
-
-/* FOR MODULE
-
-<div class="module-name">
-  <label for="name">Project Name:</label>
-  <input type="text" name="name" id="name" />
-</div>
-<div class="module-steps">
-  <label for="steps">To-Do Steps: (separate steps by line break)</label>
-  <textarea name="steps" id="steps" cols="30" rows="10"></textarea>
-</div>
-<div class="module-priority">
-  <label for="priority">Priority: (0-9)</label>
-  <input type="number" name="priority" id="priority" min="0" max="9" />
-</div>
-<div class="module-buttons">
-  <button id="ok">OK</button>
-  <button id="cancel">cancel</button>
-</div>
-
-*/
+//newToDoModule used in eventListeners

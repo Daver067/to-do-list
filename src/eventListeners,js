@@ -1,4 +1,9 @@
-import { newProjectModule } from "./renderPage";
+import {
+  newProjectModule,
+  newToDoModule,
+  displayToDoInDisplay,
+} from "./renderingProjectsTodos";
+import { toDo, Project } from "./projectsTodos";
 
 //adds event listener to New Project button in Nav Bar
 function newProjectButton() {
@@ -12,22 +17,55 @@ function newProjectButton() {
 function newToDoButton() {
   const btn = document.getElementById("newToDo");
   btn.addEventListener("click", () => {
-    alert("clicked todo");
+    newToDoModule();
+    //createNewToDo
   });
 }
 
 //listener for clicking on OK when New Project Module is up
+function createNewProjectOK() {
+  const okButton = document.getElementById("ok");
+  okButton.addEventListener("click", () => {
+    const ProjectName = document.querySelector("#name").value;
+    const project = new Project(ProjectName);
+    console.log(project);
+    closeModule();
+  });
+}
+
+//listener for clicking on OK when New Project Module is up
+function createNewToDoOK() {
+  const okButton = document.getElementById("ok");
+  okButton.addEventListener("click", () => {
+    const toDoName = document.querySelector("#name").value;
+    const toDoSteps = textAreaToArray();
+    const todoPriority = document.querySelector("#priority").value;
+    const toDoCreated = new toDo(toDoName, toDoSteps, todoPriority);
+    closeModule();
+    displayToDoInDisplay(toDoCreated);
+  });
+}
+
+//function to take textarea info and put it into an Array
+function textAreaToArray() {
+  let toDoSteps = document.querySelector("#steps").value;
+  let toDoStepsArray = toDoSteps.split("\n");
+  return toDoStepsArray;
+}
 
 //Cancel for any module
 function cancelBtn() {
   const cancelBtn = document.getElementById("cancel");
-  cancelBtn.addEventListener("click", () => {
-    const body = document.querySelector("body");
-    const module = document.querySelector(".module");
-    const moduleBackground = document.querySelector(".module-background");
-    body.removeChild(module);
-    body.removeChild(moduleBackground);
-  });
+  cancelBtn.addEventListener("click", closeModule);
+}
+
+//function to close module
+function closeModule() {
+  const body = document.querySelector("body");
+  const module = document.querySelector(".module");
+  const moduleBackground = document.querySelector(".module-background");
+  body.removeChild(module);
+  body.removeChild(moduleBackground);
 }
 
 //adding listeners to page load
@@ -36,9 +74,10 @@ function allListeners() {
   newToDoButton();
 }
 
-export { allListeners, cancelBtn };
+export { allListeners, cancelBtn, createNewProjectOK, createNewToDoOK };
 /* 
 Alllisteners goed to render page
 cancelBtn goes to render page 
-
+createNewProjectOK goes to render page 
+createNewToDoOK goes to render page 
 */
