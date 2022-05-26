@@ -1,8 +1,9 @@
 import { createNewElement } from "./renderPage";
-import edit from "./images/edit.svg";
-import delete2 from "./images/delete.svg";
-import check from "./images/check.svg";
+import { allImages } from "./imageLoaderAndListener";
 
+/***************************************************************
+ * TODO CLASS
+ **************************************************************/
 class toDo {
   constructor(name, steps, priority) {
     (this.name = name), (this.steps = steps), (this.priority = priority);
@@ -10,7 +11,7 @@ class toDo {
 
   CreateDomElement = () => {
     const toDoCard = createNewElement("div", "to-do-display", "");
-    const steps = this.stepArrayToLi();
+    const steps = this.#stepArrayToLi();
     toDoCard.appendChild(steps);
     const toDoName = createNewElement("h1", "to-do-name", `${this.name}`);
     toDoCard.appendChild(toDoName);
@@ -21,23 +22,26 @@ class toDo {
       `<div class="priority">Priority - ${this.priority}</div>`
     );
     const images = createNewElement("div", "images", "");
-    images.appendChild(this.addImages(check));
-    images.appendChild(this.addImages(edit));
-    images.appendChild(this.addImages(delete2));
+    images.appendChild(this.#addImages(allImages.check));
+    images.appendChild(this.#addImages(allImages.edit));
+    images.appendChild(this.#addImages(allImages.delete));
     priorityIcons.appendChild(images);
     toDoCard.appendChild(priorityIcons);
 
-    const toDoDisplay = document.querySelector(".display-to-do-display");
-    toDoDisplay.appendChild(toDoCard);
+    return toDoCard;
+    //remove below this line once I figure a proper way to display all Todos in a Project
+    //const toDoDisplay = document.querySelector(".display-to-do-display");
+    //toDoDisplay.appendChild(toDoCard);
   };
 
-  addImages = (IMAGE) => {
+  //Private Functions Below!
+  #addImages = (IMAGE) => {
     const newImage = new Image();
     newImage.src = IMAGE;
     return newImage;
   };
 
-  stepArrayToLi = () => {
+  #stepArrayToLi = () => {
     const allSteps = createNewElement("ol", "to-do-steps", "");
     this.steps.forEach((step) => {
       const thisStep = createNewElement("li", "listItem", step);
@@ -47,14 +51,36 @@ class toDo {
   };
 }
 
+/******************************************************************
+ * CLASS PROJECT
+ *****************************************************************/
 class Project {
   constructor(name) {
     this.name = name;
     this.toDos = [];
+    this.toDoDoms = [];
   }
 
   addToDo = (newTodo) => {
     this.toDos.push(newTodo);
+  };
+
+  cleartoDoDoms = () => {
+    this.toDoDoms = [];
+  };
+
+  turnToDosIntoDoms = () => {
+    this.cleartoDoDoms;
+    this.toDos.forEach((todo) => {
+      this.toDoDoms.push(todo.CreateDomElement());
+    });
+  };
+
+  renderDoms = () => {
+    this.toDoDoms.forEach((dom) => {
+      const toDoDisplay = document.querySelector(".display-to-do-display");
+      toDoDisplay.appendChild(dom);
+    });
   };
 }
 
@@ -75,7 +101,7 @@ let general = new Project("general");
 general.addToDo(mowLawn);
 general.addToDo(mowLawn);
 general.addToDo(mowLawn);
-let projects = [];
+let projects = [general];
 
 export { general, projects, toDo, Project };
 /*

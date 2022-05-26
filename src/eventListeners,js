@@ -1,41 +1,46 @@
-import {
-  newProjectModule,
-  newToDoModule,
-  displayToDoInDisplay,
-} from "./renderingProjectsTodos";
-import { createNewElement } from "./renderPage";
+import { newProjectModule, newToDoModule } from "./popupModules";
 import { toDo, Project } from "./projectsTodos";
+
+/****************************************************
+ * * Project Listeners
+ *****************************************************/
 
 //adds event listener to New Project button in Nav Bar
 function newProjectButton() {
   const btn = document.getElementById("newProject");
   btn.addEventListener("click", () => {
     newProjectModule();
+    cancelBtn();
+    createNewProjectOKListener();
   });
 }
 
+//listener for clicking on OK when New Project Module is up
+function createNewProjectOKListener() {
+  const okButton = document.getElementById("ok");
+  okButton.addEventListener("click", () => {
+    const ProjectName = document.querySelector("#name").value;
+    const projectMade = new Project(ProjectName);
+    console.log(projectMade);
+    closeModule();
+  });
+}
+
+/*********************************************************
+ * To Do Listeners
+ *********************************************************/
 //clicking on New To-Do Button
 function newToDoButton() {
   const btn = document.getElementById("newToDo");
   btn.addEventListener("click", () => {
     newToDoModule();
-    //createNewToDo
+    createNewToDoOKListener();
+    cancelBtn();
   });
 }
 
-//listener for clicking on OK when New Project Module is up
-function createNewProjectOK() {
-  const okButton = document.getElementById("ok");
-  okButton.addEventListener("click", () => {
-    const ProjectName = document.querySelector("#name").value;
-    const project = new Project(ProjectName);
-    console.log(project);
-    closeModule();
-  });
-}
-
-//listener for clicking on OK when New Project Module is up
-function createNewToDoOK() {
+//listener for clicking on OK when New ToDo Module is up
+function createNewToDoOKListener() {
   const okButton = document.getElementById("ok");
   okButton.addEventListener("click", () => {
     const toDoName = document.querySelector("#name").value;
@@ -54,6 +59,9 @@ function textAreaToArray() {
   return toDoStepsArray;
 }
 
+/***************************************************************
+ * Both To-Do and Project Listeners
+ **************************************************************/
 //Cancel for any module
 function cancelBtn() {
   const cancelBtn = document.getElementById("cancel");
@@ -69,16 +77,25 @@ function closeModule() {
   body.removeChild(moduleBackground);
 }
 
+/*****************************************************************
+ * Page Load Listeners
+ ****************************************************************/
 //adding listeners to page load
 function allListeners() {
   newProjectButton();
   newToDoButton();
 }
 
-export { allListeners, cancelBtn, createNewProjectOK, createNewToDoOK };
+//clicking on the check marks ToDo as complete
+function checkMarkListener() {}
+
+//clicking on the edit button allows editting of current todo
+function editListener() {}
+
+//clicking on delete button deletes current toDo
+function deleteListener() {}
+
+export { allListeners };
 /* 
 Alllisteners goed to render page
-cancelBtn goes to render page 
-createNewProjectOK goes to render page 
-createNewToDoOK goes to render page 
 */

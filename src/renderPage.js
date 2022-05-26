@@ -1,4 +1,5 @@
 import { allListeners } from "./eventListeners,js";
+import { general } from "./projectsTodos";
 
 function createNewElement(type, addClass, innerHTML) {
   const domElement = document.createElement(type);
@@ -34,7 +35,7 @@ function createDisplay() {
   const display = createNewElement(
     "div",
     "display",
-    '<div class="project-display"><h1 class="project-display-header">General</h1><button id="rmProject">Delete Project</button></div><div class="display-to-do-display"><div class="to-do-display"><h1 class="to-do-name">Mow Lawn</h1><ol class="to-do-steps"><li>Prep Lawn Mower</li><li>Mow Lawn</li><li>Dispose of grass</li><li>Clean Up</li></ol><div class="priority-icons"><div class="priority">Priority - 6</div><div class="images"><img src="../src/images/check.svg" alt="check" /><img src="../src/images/edit.svg" alt="edit" /><img src="../src/images/delete.svg" alt="delete" /></div></div></div>'
+    '<div class="project-display"><h1 class="project-display-header">General</h1><button id="rmProject">Delete Project</button></div><div class="display-to-do-display"></div>'
   );
   return display;
 }
@@ -58,6 +59,9 @@ function renderPage() {
   container.appendChild(createFooter());
   container.appendChild(createNav());
   allListeners();
+
+  general.turnToDosIntoDoms();
+  general.renderDoms();
 }
 
 export { renderPage, createNewElement };
