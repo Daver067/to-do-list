@@ -3,6 +3,7 @@ import {
   newToDoModule,
   displayToDoInDisplay,
 } from "./renderingProjectsTodos";
+import { createNewElement } from "./renderPage";
 import { toDo, Project } from "./projectsTodos";
 
 //adds event listener to New Project button in Nav Bar
@@ -42,7 +43,7 @@ function createNewToDoOK() {
     const todoPriority = document.querySelector("#priority").value;
     const toDoCreated = new toDo(toDoName, toDoSteps, todoPriority);
     closeModule();
-    displayToDoInDisplay(toDoCreated);
+    toDoCreated.CreateDomElement();
   });
 }
 

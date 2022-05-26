@@ -60,7 +60,5 @@ function renderPage() {
   allListeners();
 }
 
-export { renderPage };
+export { renderPage, createNewElement };
 //render page used in index.html
-//newProjectModule used in eventListeners
-//newToDoModule used in eventListeners
