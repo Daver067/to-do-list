@@ -1,5 +1,10 @@
 import { newProjectModule, newToDoModule } from "./popupModules";
-import { toDo, Project } from "./projectsTodos";
+import {
+  toDo,
+  Project,
+  projects,
+  checkForActiveProject,
+} from "./projectsTodos";
 
 /****************************************************
  * * Project Listeners
@@ -34,22 +39,43 @@ function newToDoButton() {
   const btn = document.getElementById("newToDo");
   btn.addEventListener("click", () => {
     newToDoModule();
-    createNewToDoOKListener();
+    ToDoModuleOKListener();
     cancelBtn();
   });
 }
 
 //listener for clicking on OK when New ToDo Module is up
-function createNewToDoOKListener() {
+function ToDoModuleOKListener() {
   const okButton = document.getElementById("ok");
   okButton.addEventListener("click", () => {
-    const toDoName = document.querySelector("#name").value;
-    const toDoSteps = textAreaToArray();
-    const todoPriority = document.querySelector("#priority").value;
-    const toDoCreated = new toDo(toDoName, toDoSteps, todoPriority);
+    const toDoCreated = createToDoObjectFromModuleInput();
+    let ProjectThisTodoBelongsTo = document.getElementById("projectToDoModule");
+    ProjectThisTodoBelongsTo = checkProjectsArrayForToDoCreation(
+      ProjectThisTodoBelongsTo.value
+    );
+    ProjectThisTodoBelongsTo.addToDo(toDoCreated);
+    ProjectThisTodoBelongsTo.renderDoms();
     closeModule();
-    toDoCreated.CreateDomElement();
   });
+}
+//takes input values from the module form for todo creation and returns an object
+function createToDoObjectFromModuleInput() {
+  const toDoName = document.querySelector("#name").value;
+  const toDoSteps = textAreaToArray();
+  const todoPriority = document.querySelector("#priority").value;
+  const toDoCreated = new toDo(toDoName, toDoSteps, todoPriority);
+  return toDoCreated;
+}
+
+//checks the input in todo creation for project vs the array of projects and returns the actual project
+function checkProjectsArrayForToDoCreation(projectModuleString) {
+  let match;
+  projects.forEach((project) => {
+    if (project.name == projectModuleString) {
+      match = projects[projects.indexOf(project)];
+    }
+  });
+  return match;
 }
 
 //function to take textarea info and put it into an Array
@@ -58,6 +84,18 @@ function textAreaToArray() {
   let toDoStepsArray = toDoSteps.split("\n");
   return toDoStepsArray;
 }
+
+//clicking on the check marks ToDo as complete
+function checkMarkListener(ThisToDoObject) {
+  ThisToDoObject.clickedCheckmark();
+  checkForActiveProject();
+}
+
+//clicking on the edit button allows editting of current todo
+function editListener() {}
+
+//clicking on delete button deletes current toDo
+function deleteListener() {}
 
 /***************************************************************
  * Both To-Do and Project Listeners
@@ -86,16 +124,7 @@ function allListeners() {
   newToDoButton();
 }
 
-//clicking on the check marks ToDo as complete
-function checkMarkListener() {}
-
-//clicking on the edit button allows editting of current todo
-function editListener() {}
-
-//clicking on delete button deletes current toDo
-function deleteListener() {}
-
-export { allListeners };
+export { allListeners, checkMarkListener };
 /* 
 Alllisteners goed to render page
 */

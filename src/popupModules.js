@@ -20,21 +20,21 @@ function newToDoModule() {
     createNewElement(
       "div",
       "module-name",
-      '<label for="name">To-Do Name:</label>  <input type="text" name="name" id="name" placeholder="Mow Lawn"/>'
+      '<div class="toDoName"><label for="name">To-Do Name:</label><input type="text" name="name" id="name" placeholder="Mow Lawn"/></div><div class="toDoProject"><label for="projectToDoModule">Project:</label><select name="projectToDoModule" id="projectToDoModule"><option value="General">General</option></select></div>'
     )
   );
   module.appendChild(
     createNewElement(
       "div",
       "module-steps",
-      '<label for="steps">To-Do Steps: (separate steps by line break)</label><textarea name="steps" id="steps" cols="30" rows="10" placeholder="step one &#10step two &#10step three &#10etc.."></textarea>'
+      '<label for="steps">To-Do Steps: <span class="small">(separate steps by line break)</span></label><textarea name="steps" id="steps" cols="30" rows="10" placeholder="step one &#10step two &#10step three &#10etc.."></textarea>'
     )
   );
   module.appendChild(
     createNewElement(
       "div",
       "module-priority",
-      '  <label for="priority">Priority: (0-9)</label><input type="number" name="priority" id="priority" min="0" max="9" />'
+      '  <label for="priority">Priority: <span class="small">(0-9)</span></label><input type="number" name="priority" id="priority" min="0" max="9" />'
     )
   );
   module.appendChild(

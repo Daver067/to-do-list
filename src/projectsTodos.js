@@ -1,16 +1,27 @@
 import { createNewElement } from "./renderPage";
 import { allImages } from "./imageLoaderAndListener";
+import { checkMarkListener } from "./eventListeners,js";
 
 /***************************************************************
  * TODO CLASS
  **************************************************************/
 class toDo {
   constructor(name, steps, priority) {
-    (this.name = name), (this.steps = steps), (this.priority = priority);
+    (this.name = name),
+      (this.steps = steps),
+      (this.priority = priority),
+      (this.completed = false);
   }
+
+  clickedCheckmark = () => {
+    this.completed ? (this.completed = false) : (this.completed = true);
+  };
 
   CreateDomElement = () => {
     const toDoCard = createNewElement("div", "to-do-display", "");
+    if (this.completed) {
+      toDoCard.classList.add("completed");
+    }
     const steps = this.#stepArrayToLi();
     toDoCard.appendChild(steps);
     const toDoName = createNewElement("h1", "to-do-name", `${this.name}`);
@@ -22,7 +33,11 @@ class toDo {
       `<div class="priority">Priority - ${this.priority}</div>`
     );
     const images = createNewElement("div", "images", "");
-    images.appendChild(this.#addImages(allImages.check));
+    const checkMark = this.#addImages(allImages.check);
+    checkMark.addEventListener("click", () => {
+      checkMarkListener(this);
+    });
+    images.appendChild(checkMark);
     images.appendChild(this.#addImages(allImages.edit));
     images.appendChild(this.#addImages(allImages.delete));
     priorityIcons.appendChild(images);
@@ -59,7 +74,12 @@ class Project {
     this.name = name;
     this.toDos = [];
     this.toDoDoms = [];
+    this.active = false;
   }
+
+  toggleActive = () => {
+    this.active == true ? (this.active = false) : (this.active = true);
+  };
 
   addToDo = (newTodo) => {
     this.toDos.push(newTodo);
@@ -70,13 +90,21 @@ class Project {
   };
 
   turnToDosIntoDoms = () => {
-    this.cleartoDoDoms;
+    this.cleartoDoDoms();
     this.toDos.forEach((todo) => {
       this.toDoDoms.push(todo.CreateDomElement());
     });
   };
 
+  clearDisplay = () => {
+    const display = document.querySelector(".display-to-do-display");
+    while (display.firstElementChild) {
+      display.removeChild(display.firstElementChild);
+    }
+  };
   renderDoms = () => {
+    this.clearDisplay();
+    this.turnToDosIntoDoms();
     this.toDoDoms.forEach((dom) => {
       const toDoDisplay = document.querySelector(".display-to-do-display");
       toDoDisplay.appendChild(dom);
@@ -87,7 +115,14 @@ class Project {
 /***************************************************************
  * functions for projects and todos
  **************************************************************/
-
+function checkForActiveProject() {
+  projects.forEach((project) => {
+    if (project.active == true) {
+      project.turnToDosIntoDoms();
+      project.renderDoms();
+    }
+  });
+}
 /***************************************************************
  * currently this is just for building site
  ***********************************************************/
@@ -97,14 +132,17 @@ let mowLawn = new toDo(
   6
 );
 
-let general = new Project("general");
-general.addToDo(mowLawn);
-general.addToDo(mowLawn);
-general.addToDo(mowLawn);
-let projects = [general];
+let General = new Project("General");
+General.addToDo(mowLawn);
+General.addToDo(mowLawn);
+General.addToDo(mowLawn);
 
-export { general, projects, toDo, Project };
+let projects = ["junk", "more junk", General, "test"];
+
+export { General, projects, toDo, Project, checkForActiveProject };
 /*
 toDo goes to eventListeners
 Project goes to eventListeners
+general to renderPage
+projects to...? i forget
 */

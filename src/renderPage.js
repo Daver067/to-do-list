@@ -1,5 +1,5 @@
 import { allListeners } from "./eventListeners,js";
-import { general } from "./projectsTodos";
+import { checkForActiveProject, General } from "./projectsTodos";
 
 function createNewElement(type, addClass, innerHTML) {
   const domElement = document.createElement(type);
@@ -60,8 +60,9 @@ function renderPage() {
   container.appendChild(createNav());
   allListeners();
 
-  general.turnToDosIntoDoms();
-  general.renderDoms();
+  //using this for pageload for now.
+  General.toggleActive();
+  checkForActiveProject();
 }
 
 export { renderPage, createNewElement };
