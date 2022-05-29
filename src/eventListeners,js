@@ -1,4 +1,8 @@
-import { newProjectModule, newToDoModule } from "./popupModules";
+import {
+  newProjectModule,
+  newToDoModule,
+  editToDoModule,
+} from "./popupModules";
 import {
   toDo,
   Project,
@@ -49,9 +53,9 @@ function ToDoModuleOKListener() {
   const okButton = document.getElementById("ok");
   okButton.addEventListener("click", () => {
     const toDoCreated = createToDoObjectFromModuleInput();
-    let ProjectThisTodoBelongsTo = document.getElementById("projectToDoModule");
+    let ProjectThisTodoBelongsTo = toDoCreated.parentProject;
     ProjectThisTodoBelongsTo = checkProjectsArrayForToDoCreation(
-      ProjectThisTodoBelongsTo.value
+      ProjectThisTodoBelongsTo
     );
     ProjectThisTodoBelongsTo.addToDo(toDoCreated);
     ProjectThisTodoBelongsTo.renderDoms();
@@ -63,15 +67,21 @@ function createToDoObjectFromModuleInput() {
   const toDoName = document.querySelector("#name").value;
   const toDoSteps = textAreaToArray();
   const todoPriority = document.querySelector("#priority").value;
-  const toDoCreated = new toDo(toDoName, toDoSteps, todoPriority);
+  const parentProject = document.getElementById("projectToDoModule").value;
+  const toDoCreated = new toDo(
+    toDoName,
+    toDoSteps,
+    todoPriority,
+    parentProject
+  );
   return toDoCreated;
 }
 
-//checks the input in todo creation for project vs the array of projects and returns the actual project
-function checkProjectsArrayForToDoCreation(projectModuleString) {
+//assigns todo to the proper project
+function checkProjectsArrayForToDoCreation(parentProject) {
   let match;
   projects.forEach((project) => {
-    if (project.name == projectModuleString) {
+    if (project.name == parentProject) {
       match = projects[projects.indexOf(project)];
     }
   });
@@ -82,7 +92,18 @@ function checkProjectsArrayForToDoCreation(projectModuleString) {
 function textAreaToArray() {
   let toDoSteps = document.querySelector("#steps").value;
   let toDoStepsArray = toDoSteps.split("\n");
+  removeBlanks(toDoStepsArray);
   return toDoStepsArray;
+}
+//removes any accidental blank steps from array /[^\s\\]/
+function removeBlanks(array) {
+  for (let i = 0; i < array.length; i++) {
+    let regEx = /[^\s\\]/;
+    if (array[i].match(regEx)) {
+    } else {
+      array.splice(i, 1), i--;
+    }
+  }
 }
 
 //clicking on the check marks ToDo as complete
@@ -92,10 +113,33 @@ function checkMarkListener(ThisToDoObject) {
 }
 
 //clicking on the edit button allows editting of current todo
-function editListener() {}
+function editListener(ThisToDoObject) {
+  ThisToDoObject.clickedEdit();
+  editToDoModule(ThisToDoObject);
+  cancelBtn();
+  EditOKListener();
+}
+
+//listener for clicking on OK when New ToDo Module is up
+function EditOKListener() {
+  const okButton = document.getElementById("ok");
+  okButton.addEventListener("click", () => {
+    const toDoCreated = createToDoObjectFromModuleInput();
+    let ProjectThisTodoBelongsTo = toDoCreated.parentProject;
+    ProjectThisTodoBelongsTo = checkProjectsArrayForToDoCreation(
+      ProjectThisTodoBelongsTo
+    );
+    ProjectThisTodoBelongsTo.editToDo(toDoCreated);
+    ProjectThisTodoBelongsTo.renderDoms();
+    closeModule();
+  });
+}
 
 //clicking on delete button deletes current toDo
-function deleteListener() {}
+function deleteListener(ThisToDoObject) {
+  ThisToDoObject.clickedDelete();
+  checkForActiveProject();
+}
 
 /***************************************************************
  * Both To-Do and Project Listeners
@@ -124,7 +168,7 @@ function allListeners() {
   newToDoButton();
 }
 
-export { allListeners, checkMarkListener };
+export { allListeners, checkMarkListener, deleteListener, editListener };
 /* 
 Alllisteners goed to render page
 */
