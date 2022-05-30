@@ -5,6 +5,7 @@ import {
   deleteListener,
   editListener,
 } from "./eventListeners,js";
+import { renderNav } from "./navBar";
 
 /***************************************************************
  * TODO CLASS
@@ -52,11 +53,21 @@ class toDo {
     toDoCard = this.#priorityColorChange(toDoCard);
     const images = createNewElement("div", "images", "");
 
-    const checkMark = this.#addImages(allImages.check);
-    checkMark.addEventListener("click", () => {
-      checkMarkListener(this);
-    });
-    images.appendChild(checkMark);
+    //changes checkmark to uncheck
+    if (this.completed) {
+      const unCheckMark = this.#addImages(allImages.uncheck);
+      unCheckMark.addEventListener("click", () => {
+        checkMarkListener(this);
+      });
+      images.appendChild(unCheckMark);
+    } else {
+      const checkMark = this.#addImages(allImages.check);
+      checkMark.addEventListener("click", () => {
+        checkMarkListener(this);
+      });
+      images.appendChild(checkMark);
+    }
+    // end of this big function
 
     const editButton = this.#addImages(allImages.edit);
     editButton.addEventListener("click", () => {
@@ -117,8 +128,12 @@ class Project {
     this.toDos = [];
     this.toDoDoms = [];
     this.active = false;
+    this.expanded = true;
   }
 
+  toggleExpanded = () => {
+    this.expanded == true ? (this.expanded = false) : (this.expanded = true);
+  };
   toggleActive = () => {
     this.active == true ? (this.active = false) : (this.active = true);
   };
@@ -187,6 +202,7 @@ function checkForActiveProject() {
       project.turnToDosIntoDoms();
       project.renderDoms();
     }
+    renderNav();
   });
 }
 
@@ -211,18 +227,28 @@ let mowLawn3 = new toDo(
   1,
   "General"
 );
+let anotherToDo = new toDo(
+  "stuff",
+  ["thing", "another thing", "ok this is it"],
+  5,
+  "Random"
+);
+
+let Random = new Project("Random");
+Random.addToDo(anotherToDo);
+Random.addToDo(mowLawn);
 
 let General = new Project("General");
 General.addToDo(mowLawn);
 General.addToDo(mowLawn2);
 General.addToDo(mowLawn3);
 
-let projects = ["junk", "more junk", General, "test"];
+let projects = [General];
+projects.push(Random);
 
 export { General, projects, toDo, Project, checkForActiveProject };
 /*
 toDo goes to eventListeners
 Project goes to eventListeners
 general to renderPage
-projects to...? i forget
 */

@@ -1,6 +1,3 @@
-import { allListeners } from "./eventListeners,js";
-import { checkForActiveProject, General } from "./projectsTodos";
-
 function createNewElement(type, addClass, innerHTML) {
   const domElement = document.createElement(type);
   domElement.classList.add(addClass);
@@ -25,7 +22,7 @@ function createNav() {
   const nav = createNewElement(
     "div",
     "nav",
-    `<div class="project-buttons"><button id="newProject">New Project</button><button id="newToDo">New To-Do</button></div>`
+    `<div class="project-buttons"><button id="newProject">New Project</button><button id="newToDo">New To-Do</button></div><div class="project-nav-bar"</div>`
   );
   return nav;
 }
@@ -55,14 +52,9 @@ function renderPage() {
   const container = createNewElement("div", "container", "");
   document.querySelector("body").appendChild(container);
   container.appendChild(createHeader());
+  container.appendChild(createNav());
   container.appendChild(createDisplay());
   container.appendChild(createFooter());
-  container.appendChild(createNav());
-  allListeners();
-
-  //using this for pageload for now.
-  General.toggleActive();
-  checkForActiveProject();
 }
 
 export { renderPage, createNewElement };

@@ -48,10 +48,10 @@
   grid-area: 1/1/3/2;
   background-color: #e2e8f0;
   box-shadow: inset 0px 0px 10px 1px #888888;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  gap: 5%;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.5fr 7fr;
+  gap: 2%;
   padding: 10%;
 }
 
@@ -148,9 +148,17 @@
 }
 
 .project-buttons {
+  grid-area: 1/1/2/2;
   display: flex;
   flex-direction: column;
   gap: 5px;
+}
+
+.project-nav-bar {
+  grid-area: 2/1/3/2;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 #rmProject {
