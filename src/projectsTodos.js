@@ -134,8 +134,14 @@ class Project {
   toggleExpanded = () => {
     this.expanded == true ? (this.expanded = false) : (this.expanded = true);
   };
+  toggleInactive = () => {
+    this.active = false;
+  };
   toggleActive = () => {
-    this.active == true ? (this.active = false) : (this.active = true);
+    projects.forEach((project) => {
+      project.toggleInactive();
+    });
+    this.active = true;
   };
 
   addToDo = (newTodo) => {
@@ -166,6 +172,7 @@ class Project {
       const toDoDisplay = document.querySelector(".display-to-do-display");
       toDoDisplay.appendChild(dom);
     });
+    renderNav();
   };
 
   deleteToDo = () => {
