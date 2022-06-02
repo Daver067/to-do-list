@@ -35,11 +35,34 @@ function createNewProjectNav(project) {
 function appendToDoElementsToProject(project, parentNode) {
   project.toDos.forEach((todo) => {
     if (project.expanded) {
-      parentNode.appendChild(
-        createNewElement("li", `to-do-shortcut`, `${todo.name.toUpperCase()}`)
+      let newTodoNavDom = createNewElement(
+        "li",
+        `to-do-shortcut`,
+        `${todo.name.toUpperCase()}`
       );
+      newTodoNavDom = backgroundColorPriority(todo, newTodoNavDom);
+      if (todo.completed) {
+        newTodoNavDom.classList.add("strikeThrough");
+        const check = new Image();
+        check.src = allImages.checkGreen;
+        newTodoNavDom.appendChild(check);
+      }
+      parentNode.appendChild(newTodoNavDom);
     } else parentNode.append(".");
   });
+}
+
+function backgroundColorPriority(todo, todoDom) {
+  if (todo.priority >= 0 && todo.priority <= 3) {
+    todoDom.style.backgroundColor = "rgba(0,255,0,0.3";
+  }
+  if (todo.priority >= 4 && todo.priority <= 6) {
+    todoDom.style.backgroundColor = "rgba(255,165,0,0.3";
+  }
+  if (todo.priority >= 7 && todo.priority <= 9) {
+    todoDom.style.backgroundColor = "rgba(255,0,0,0.3";
+  }
+  return todoDom;
 }
 
 //if the project is active makes a minimize and vice versa

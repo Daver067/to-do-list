@@ -85,9 +85,6 @@ class toDo {
     toDoCard.appendChild(priorityIcons);
 
     return toDoCard;
-    //remove below this line once I figure a proper way to display all Todos in a Project
-    //const toDoDisplay = document.querySelector(".display-to-do-display");
-    //toDoDisplay.appendChild(toDoCard);
   };
 
   //Private Functions Below!
@@ -188,14 +185,19 @@ class Project {
 
   editToDo = (newToDo) => {
     let index = 0;
+    let moved = true;
     this.toDos.forEach((todo) => {
       if (todo.edit) {
         let checkedOrNot = todo.completed;
         newToDo.completed = checkedOrNot;
         this.toDos[index] = newToDo;
+        moved = false;
       }
       index++;
     });
+    if (moved) {
+      this.toDos.push(newToDo);
+    }
   };
 }
 
@@ -203,11 +205,13 @@ class Project {
  * functions for projects and todos
  **************************************************************/
 function checkForActiveProject() {
+  const projectHeader = document.querySelector(".project-display-header");
   projects.forEach((project) => {
     if (project.active == true) {
       project.deleteToDo();
       project.turnToDosIntoDoms();
       project.renderDoms();
+      projectHeader.textContent = project.name;
     }
     renderNav();
   });

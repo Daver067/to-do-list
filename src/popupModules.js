@@ -1,3 +1,4 @@
+import { projects } from "./projectsTodos";
 import { createNewElement } from "./renderPage";
 
 /*******************************************************************
@@ -20,9 +21,12 @@ function newToDoModule() {
     createNewElement(
       "div",
       "module-name",
-      '<div class="toDoName"><label for="name">To-Do Name:</label><input type="text" name="name" id="name" placeholder="Mow Lawn"/></div><div class="toDoProject"><label for="projectToDoModule">Project:</label><select name="projectToDoModule" id="projectToDoModule"><option value="General">General</option></select></div>'
+      '<div class="toDoName"><label for="name">To-Do Name:</label><input type="text" name="name" id="name" placeholder="Mow Lawn"/></div><div class="toDoProject"><label for="projectToDoModule">Project:</label></div>'
     )
   );
+  document
+    .querySelector(".toDoProject")
+    .appendChild(createProjectSelectOptions());
   module.appendChild(
     createNewElement(
       "div",
@@ -53,9 +57,12 @@ function editToDoModule(toDoToEdit) {
     createNewElement(
       "div",
       "module-name",
-      `<div class="toDoName"><label for="name">To-Do Name:</label><input type="text" name="name" id="name" value='${toDoToEdit.name}'/></div><div class="toDoProject"><label for="projectToDoModule">Project:</label><select name="projectToDoModule" id="projectToDoModule"><option value="General">General</option></select></div>`
+      `<div class="toDoName"><label for="name">To-Do Name:</label><input type="text" name="name" id="name" value='${toDoToEdit.name}'/></div><div class="toDoProject"><label for="projectToDoModule">Project:</label></div>`
     )
   );
+  document
+    .querySelector(".toDoProject")
+    .appendChild(createProjectSelectOptions());
   module.appendChild(
     createNewElement(
       "div",
@@ -99,6 +106,24 @@ function newProjectModule() {
       '<button id="ok">OK</button><div></div><button id="cancel">CANCEL</button>'
     )
   );
+}
+
+//creates all select options for all available projects
+function createProjectSelectOptions() {
+  let select = document.createElement("select");
+  select.name = "projectToDoModule";
+  select.id = "projectToDoModule";
+  projects.forEach((project) => {
+    let newOption = createNewElement("option");
+    newOption.value = project.name;
+    newOption.text = project.name;
+    if (project.active) {
+      newOption.selected = "selected";
+    }
+
+    select.appendChild(newOption);
+  });
+  return select;
 }
 
 export { newProjectModule, newToDoModule, editToDoModule };

@@ -100,7 +100,7 @@
 .to-do-shortcut {
   font-size: 1rem;
   font-weight: lighter;
-  color: var(--priority4to6);
+  color: black;
   border: 0.5px black solid;
   box-shadow: inset 0px 0px 10px 1px #888888;
   border-radius: 8px;
@@ -344,4 +344,13 @@ select {
 .module-buttons button {
   width: 100%;
   height: 100%;
+}
+
+.strikeThrough {
+  text-decoration: line-through;
+}
+
+.to-do-shortcut > img {
+  align-self: center;
+  justify-self: end;
 }

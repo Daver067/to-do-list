@@ -28,11 +28,18 @@ function newProjectButton() {
 function createNewProjectOKListener() {
   const okButton = document.getElementById("ok");
   okButton.addEventListener("click", () => {
-    const ProjectName = document.querySelector("#name").value;
-    const projectMade = new Project(ProjectName);
-    console.log(projectMade);
+    pushNewActiveProject();
+    checkForActiveProject();
     closeModule();
   });
+}
+
+//pushes new project to array and sets it active
+function pushNewActiveProject() {
+  const ProjectName = document.querySelector("#name").value;
+  const projectMade = new Project(ProjectName);
+  projectMade.toggleActive();
+  projects.push(projectMade);
 }
 
 /*********************************************************
@@ -114,22 +121,31 @@ function checkMarkListener(ThisToDoObject) {
 
 //clicking on the edit button allows editting of current todo
 function editListener(ThisToDoObject) {
-  ThisToDoObject.clickedEdit();
   editToDoModule(ThisToDoObject);
   cancelBtn();
-  EditOKListener();
+  EditOKListener(ThisToDoObject);
 }
 
 //listener for clicking on OK when New ToDo Module is up
-function EditOKListener() {
+function EditOKListener(toDoBeingEdited) {
   const okButton = document.getElementById("ok");
   okButton.addEventListener("click", () => {
+    toDoBeingEdited.clickedEdit();
     const toDoCreated = createToDoObjectFromModuleInput();
+
+    if (toDoBeingEdited.parentProject !== toDoCreated.parentProject) {
+      toDoBeingEdited.clickedDelete();
+      projects.forEach((project) => {
+        project.deleteToDo();
+      });
+    }
+
     let ProjectThisTodoBelongsTo = toDoCreated.parentProject;
     ProjectThisTodoBelongsTo = checkProjectsArrayForToDoCreation(
       ProjectThisTodoBelongsTo
     );
     ProjectThisTodoBelongsTo.editToDo(toDoCreated);
+    ProjectThisTodoBelongsTo.toggleActive();
     ProjectThisTodoBelongsTo.renderDoms();
     closeModule();
   });
