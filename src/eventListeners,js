@@ -75,6 +75,7 @@ function ToDoModuleOKListener() {
     ProjectThisTodoBelongsTo = checkProjectsArrayForToDoCreation(
       ProjectThisTodoBelongsTo
     );
+    ProjectThisTodoBelongsTo.toggleActive();
     ProjectThisTodoBelongsTo.addToDo(toDoCreated);
     ProjectThisTodoBelongsTo.renderDoms();
     closeModule();
