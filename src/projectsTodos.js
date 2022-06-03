@@ -109,7 +109,7 @@ class toDo {
     if (this.priority >= 4 && this.priority <= 6) {
       toDoCard.style.borderColor = "orange";
     }
-    if (this.priority >= 7 && this.priority <= 9) {
+    if (this.priority >= 7) {
       toDoCard.style.borderColor = "red";
     }
     return toDoCard;
@@ -206,15 +206,29 @@ class Project {
  **************************************************************/
 function checkForActiveProject() {
   const projectHeader = document.querySelector(".project-display-header");
+  let anyActive = false;
   projects.forEach((project) => {
     if (project.active == true) {
       project.deleteToDo();
       project.turnToDosIntoDoms();
       project.renderDoms();
       projectHeader.textContent = project.name;
+      anyActive = true;
     }
-    renderNav();
   });
+  //makes first project active after deleting if there is a first projecct
+  if (!anyActive && projects[0]) {
+    projects[0].toggleActive();
+    checkForActiveProject();
+  }
+  if (!anyActive && !projects[0]) {
+    let emptyProject = new Project("General");
+    projects.push(emptyProject);
+    emptyProject.toggleActive();
+    checkForActiveProject();
+  }
+
+  renderNav();
 }
 
 /***************************************************************
@@ -238,6 +252,12 @@ let mowLawn3 = new toDo(
   1,
   "General"
 );
+let mowLawn4 = new toDo(
+  "Mow Lawn",
+  ["Prep Lawn Mower", "Mow Lawn", "Dispose of Grass", "Clean Up"],
+  1,
+  "General"
+);
 let anotherToDo = new toDo(
   "stuff",
   ["thing", "another thing", "ok this is it"],
@@ -247,8 +267,8 @@ let anotherToDo = new toDo(
 
 let Random = new Project("Random");
 Random.addToDo(anotherToDo);
-Random.addToDo(mowLawn);
-
+Random.addToDo(mowLawn4);
+let general = new Project("General");
 let General = new Project("General");
 General.addToDo(mowLawn);
 General.addToDo(mowLawn2);

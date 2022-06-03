@@ -1,3 +1,5 @@
+import { deleteProjectListener } from "./eventListeners,js";
+
 function createNewElement(type, addClass, innerHTML) {
   const domElement = document.createElement(type);
   domElement.classList.add(addClass);
@@ -32,7 +34,7 @@ function createDisplay() {
   const display = createNewElement(
     "div",
     "display",
-    '<div class="project-display"><h1 class="project-display-header">General</h1><button id="rmProject">Delete Project</button></div><div class="display-to-do-display"></div>'
+    '<div class="project-display"><h1 class="project-display-header">General</h1></div><div class="display-to-do-display"></div>'
   );
   return display;
 }
@@ -46,6 +48,15 @@ function createFooter() {
   );
   return footer;
 }
+// adds project delete button to display
+function projectDeleteBtn() {
+  const btnHouse = document.querySelector(".project-display");
+  const btn = document.createElement("button");
+  btn.id = "rmProject";
+  btn.innerHTML = "Delete Project";
+  btn.addEventListener("click", deleteProjectListener);
+  btnHouse.appendChild(btn);
+}
 
 //renders the page, export this function to index to render page
 function renderPage() {
@@ -55,6 +66,7 @@ function renderPage() {
   container.appendChild(createNav());
   container.appendChild(createDisplay());
   container.appendChild(createFooter());
+  projectDeleteBtn();
 }
 
 export { renderPage, createNewElement };

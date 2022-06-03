@@ -59,7 +59,7 @@ function backgroundColorPriority(todo, todoDom) {
   if (todo.priority >= 4 && todo.priority <= 6) {
     todoDom.style.backgroundColor = "rgba(255,165,0,0.3";
   }
-  if (todo.priority >= 7 && todo.priority <= 9) {
+  if (todo.priority >= 7) {
     todoDom.style.backgroundColor = "rgba(255,0,0,0.3";
   }
   return todoDom;

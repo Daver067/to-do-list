@@ -42,6 +42,17 @@ function pushNewActiveProject() {
   projects.push(projectMade);
 }
 
+//delete project button listener
+function deleteProjectListener() {
+  projects.forEach((project) => {
+    if (project.active) {
+      let index = projects.indexOf(project);
+      projects.splice(index, 1);
+    }
+    checkForActiveProject();
+  });
+}
+
 /*********************************************************
  * To Do Listeners
  *********************************************************/
@@ -184,7 +195,13 @@ function allListeners() {
   newToDoButton();
 }
 
-export { allListeners, checkMarkListener, deleteListener, editListener };
+export {
+  allListeners,
+  checkMarkListener,
+  deleteListener,
+  editListener,
+  deleteProjectListener,
+};
 /* 
 Alllisteners goed to render page
 */

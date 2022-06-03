@@ -1,7 +1,7 @@
 import "./style.css";
 import { renderPage } from "./renderPage";
 import { allListeners } from "./eventListeners,js";
-import { checkForActiveProject, General } from "./projectsTodos";
+import { checkForActiveProject, General, projects } from "./projectsTodos";
 
 //renders general page layout
 renderPage();
