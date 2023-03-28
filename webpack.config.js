@@ -5,6 +5,13 @@ module.exports = {
   mode: "development",
   entry: "./src/index.js",
   devtool: "inline-source-map",
+  devServer: {
+    static: {
+      directory: path.join(__dirname, "public"),
+    },
+    compress: true,
+    port: 9000,
+  },
   plugins: [
     new HtmlWebpackPlugin({
       hash: true,

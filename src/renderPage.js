@@ -1,4 +1,7 @@
-import { deleteProjectListener } from "./eventListeners,js";
+import { async } from "@firebase/util";
+import { deleteProjectListener } from "./eventListeners.js";
+import { saveProjects } from "./index.js";
+import { projects } from "./projectsTodos.js";
 
 function createNewElement(type, addClass, innerHTML) {
   const domElement = document.createElement(type);
@@ -61,12 +64,26 @@ function projectDeleteBtn() {
 //renders the page, export this function to index to render page
 function renderPage() {
   const container = createNewElement("div", "container", "");
+  container.appendChild(saveProjectsButton());
   document.querySelector("body").appendChild(container);
   container.appendChild(createHeader());
   container.appendChild(createNav());
   container.appendChild(createDisplay());
   container.appendChild(createFooter());
   projectDeleteBtn();
+}
+
+// makes button to save the projects to firebase if logged in
+function saveProjectsButton() {
+  const saveButton = document.createElement("button");
+  saveButton.innerHTML = "click me to Save to the cloud!";
+  saveButton.addEventListener("click", () => {
+    saveProjects(getProjects());
+  });
+  return saveButton;
+}
+function getProjects() {
+  return projects;
 }
 
 export { renderPage, createNewElement };

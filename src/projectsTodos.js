@@ -4,7 +4,7 @@ import {
   checkMarkListener,
   deleteListener,
   editListener,
-} from "./eventListeners,js";
+} from "./eventListeners.js";
 import { renderNav } from "./navBar";
 
 /***************************************************************
@@ -232,7 +232,7 @@ function checkForActiveProject() {
 }
 
 /***************************************************************
- * currently this is just for building site
+ * currently this is just for building an anonymous login
  ***********************************************************/
 let mowLawn = new toDo(
   "Mow Lawn",
@@ -268,16 +268,27 @@ let anotherToDo = new toDo(
 let Random = new Project("Random");
 Random.addToDo(anotherToDo);
 Random.addToDo(mowLawn4);
-let general = new Project("General");
 let General = new Project("General");
 General.addToDo(mowLawn);
 General.addToDo(mowLawn2);
 General.addToDo(mowLawn3);
+let projects = [];
 
-let projects = [General];
-projects.push(Random);
+function anonymousSigninSetup() {
+  if (projects[0] == undefined) {
+    projects.push(Random);
+    projects.push(General);
+  }
+}
 
-export { General, projects, toDo, Project, checkForActiveProject };
+export {
+  General,
+  projects,
+  toDo,
+  Project,
+  checkForActiveProject,
+  anonymousSigninSetup,
+};
 /*
 toDo goes to eventListeners
 Project goes to eventListeners
