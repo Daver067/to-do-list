@@ -11,11 +11,11 @@ import { renderNav } from "./navBar";
  * TODO CLASS
  **************************************************************/
 class toDo {
-  constructor(name, steps, priority, project) {
+  constructor(name, steps, priority, project, completed = false) {
     (this.name = name),
       (this.steps = steps),
       (this.priority = priority),
-      (this.completed = false),
+      (this.completed = completed),
       (this.delete = false),
       (this.parentProject = project),
       (this.edit = false);

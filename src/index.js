@@ -5,6 +5,8 @@ import {
   anonymousSigninSetup,
   checkForActiveProject,
   General,
+  Project,
+  projects,
 } from "./projectsTodos";
 // Import the functions you need from the SDKs you need
 
@@ -26,6 +28,7 @@ import {
   limit,
   onSnapshot,
   setDoc,
+  getDoc,
   updateDoc,
   doc,
   serverTimestamp,
@@ -40,11 +43,13 @@ import { getMessaging, getToken, onMessage } from "firebase/messaging";
 import { getPerformance } from "firebase/performance";
 
 import { getFirebaseConfig } from "./firebase-config.js";
+import { parseDataToProjectsTodos, parseProjectsToJSON } from "./saveToDrive";
 // Signs-in Friendly Chat.
 async function signIn() {
   // Sign in Firebase using popup auth and Google as the identity provider.
   var provider = new GoogleAuthProvider();
   await signInWithPopup(getAuth(), provider);
+  await collectProjects();
 }
 
 // Signs-out of Friendly Chat.
@@ -112,14 +117,42 @@ function isUserSignedIn() {
 //saves the current users projects and todos to the store
 async function saveProjects(projects) {
   try {
-    await addDoc(collection(getFirestore(), "messages"), {
+    await setDoc(doc(db, getUserName(), getUserName() + " Projects"), {
       name: getUserName(),
-      text: JSON.stringify(projects),
-      profilePicUrl: getProfilePicUrl(),
+      text: parseProjectsToJSON(projects),
       timestamp: serverTimestamp(),
     });
   } catch (error) {
     console.error("Error writing new message to Firebase Database", error);
+  }
+}
+
+// get the info from the previous saved to-dos
+async function collectProjects() {
+  const docRef = doc(db, getUserName(), getUserName() + " Projects");
+  const docSnap = await getDoc(docRef);
+
+  if (docSnap.exists()) {
+    console.log("Document data:", docSnap.data());
+    const newProjects = parseDataToProjectsTodos(docSnap.data().text);
+
+    for (let i = 0; i < newProjects.length; i++) {
+      projects.push(newProjects[i]);
+    }
+    // cant reassign projects... need to fix this
+    console.log(projects);
+    renderPage();
+    allListeners();
+    General.toggleActive();
+    checkForActiveProject();
+  } else {
+    // doc.data() will be undefined in this case
+    console.log("No such document!");
+    renderPage();
+    anonymousSigninSetup();
+    allListeners();
+    General.toggleActive();
+    checkForActiveProject();
   }
 }
 
@@ -130,11 +163,9 @@ function newPageOpener() {
   signInButton.innerHTML = "press this to sign in with google account";
   signInButton.addEventListener("click", () => {
     signIn();
+
     // get the projects and todos from this user or a anonymous login first time
-    renderPage();
-    allListeners();
-    General.toggleActive();
-    checkForActiveProject();
+
     // add them to the arrays
     //render the page
   });

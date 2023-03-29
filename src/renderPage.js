@@ -1,4 +1,3 @@
-import { async } from "@firebase/util";
 import { deleteProjectListener } from "./eventListeners.js";
 import { saveProjects } from "./index.js";
 import { projects } from "./projectsTodos.js";
@@ -79,6 +78,7 @@ function saveProjectsButton() {
   saveButton.innerHTML = "click me to Save to the cloud!";
   saveButton.addEventListener("click", () => {
     saveProjects(getProjects());
+    console.log(getProjects());
   });
   return saveButton;
 }
