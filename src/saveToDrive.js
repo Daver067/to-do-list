@@ -31,8 +31,6 @@ function parseProjectsToJSON(projs) {
 // returns an array of projects with toDos
 function parseDataToProjectsTodos(rawdata) {
   const data = JSON.parse(rawdata);
-  console.log(rawdata);
-  console.log(data);
   // the return item
   const savedProjects = [];
   // for each project in the data create a new project
@@ -52,7 +50,6 @@ function parseDataToProjectsTodos(rawdata) {
     });
     savedProjects.push(newProject);
   });
-  console.log(savedProjects);
   return savedProjects;
 }
 

@@ -1,5 +1,5 @@
 import { deleteProjectListener } from "./eventListeners.js";
-import { saveProjects } from "./index.js";
+import { saveProjects, signOutButton } from "./index.js";
 import { projects } from "./projectsTodos.js";
 
 function createNewElement(type, addClass, innerHTML) {
@@ -18,6 +18,14 @@ function createHeader() {
     '<h1 id="pageTitle">To-Do-Me</h1>'
   );
   header.appendChild(caption);
+  const wrapper = document.createElement("div");
+  wrapper.style.display = "flex";
+  wrapper.style.width = "100%";
+  wrapper.style.justifyContent = "space-between";
+  wrapper.appendChild(signOutButton());
+  wrapper.appendChild(saveProjectsButton());
+  header.appendChild(wrapper);
+
   return header;
 }
 
@@ -63,7 +71,6 @@ function projectDeleteBtn() {
 //renders the page, export this function to index to render page
 function renderPage() {
   const container = createNewElement("div", "container", "");
-  container.appendChild(saveProjectsButton());
   document.querySelector("body").appendChild(container);
   container.appendChild(createHeader());
   container.appendChild(createNav());
@@ -75,10 +82,10 @@ function renderPage() {
 // makes button to save the projects to firebase if logged in
 function saveProjectsButton() {
   const saveButton = document.createElement("button");
-  saveButton.innerHTML = "click me to Save to the cloud!";
+  saveButton.classList.add("login-btn", "save-btn");
+  saveButton.innerHTML = "Save To The Cloud!";
   saveButton.addEventListener("click", () => {
     saveProjects(getProjects());
-    console.log(getProjects());
   });
   return saveButton;
 }

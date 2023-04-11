@@ -56,6 +56,9 @@ async function signIn() {
 function signOutUser() {
   // Sign out of Firebase.
   signOut(getAuth());
+  while (projects[0]) {
+    projects.pop();
+  }
 }
 
 // Initialize firebase auth
@@ -70,8 +73,6 @@ function authStateObserver(user) {
     var profilePicUrl = getProfilePicUrl();
     var userName = getUserName();
 
-    console.log(profilePicUrl);
-    console.log(userName);
     // Set the user's profile pic and name.
     //userPicElement.style.backgroundImage =
     //  "url(" + addSizeToGoogleProfilePic(profilePicUrl) + ")";
@@ -88,7 +89,6 @@ function authStateObserver(user) {
     // We save the Firebase Messaging Device token and enable notifications.
     //saveMessagingDeviceToken();
   } else {
-    console.log("signed out");
     // User is signed out!
     // Hide user's profile and sign-out button.
     //userNameElement.setAttribute("hidden", "true");
@@ -133,14 +133,13 @@ async function collectProjects() {
   const docSnap = await getDoc(docRef);
 
   if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
     const newProjects = parseDataToProjectsTodos(docSnap.data().text);
 
     for (let i = 0; i < newProjects.length; i++) {
       projects.push(newProjects[i]);
     }
     // cant reassign projects... need to fix this
-    console.log(projects);
+    clearOpeningScreen();
     renderPage();
     allListeners();
     General.toggleActive();
@@ -155,12 +154,35 @@ async function collectProjects() {
     checkForActiveProject();
   }
 }
-
+function clearOpeningScreen() {
+  while (document.body.firstElementChild) {
+    document.body.removeChild(document.body.firstElementChild);
+  }
+}
 // /*
+function signOutButton() {
+  //sign out button
+  const signOutButton = document.createElement("button");
+  signOutButton.classList.add("login-btn", "sign-out-btn");
+  signOutButton.innerHTML = "Sign Out";
+  signOutButton.addEventListener("click", () => {
+    signOutUser();
+    while (document.body.firstElementChild) {
+      document.body.removeChild(document.body.firstElementChild);
+    }
+    newPageOpener();
+  });
+  return signOutButton;
+}
 function newPageOpener() {
+  const wrapper = document.createElement("div");
+  wrapper.classList.add("wrapper");
+  document.body.appendChild(wrapper);
   // sign in button
   const signInButton = document.createElement("button");
-  signInButton.innerHTML = "press this to sign in with google account";
+  signInButton.classList.add("login-with-google-btn");
+  signInButton.classList.add("login-btn");
+  signInButton.innerHTML = "Sign In With Google Account";
   signInButton.addEventListener("click", () => {
     signIn();
 
@@ -169,28 +191,19 @@ function newPageOpener() {
     // add them to the arrays
     //render the page
   });
-  document.body.appendChild(signInButton);
-
-  //sign out button
-  const signOutButton = document.createElement("button");
-  signOutButton.innerHTML = "press this to sign Out";
-  signOutButton.addEventListener("click", () => {
-    signOutUser();
-    while (document.body.firstElementChild) {
-      document.body.removeChild(document.body.firstElementChild);
-    }
-    newPageOpener();
-  });
-  document.body.appendChild(signOutButton);
+  wrapper.appendChild(signInButton);
 
   //anonymous sign in button
   const signInAnon = document.createElement("button");
-  signInAnon.innerHTML = "press this to sign in anonymously";
+  signInAnon.classList.add("login-btn");
+
+  signInAnon.innerHTML = "Guest Signin";
   signInAnon.addEventListener("click", () => {
     const auth = getAuth();
     signInAnonymously(auth);
 
     // load the basic load page
+    clearOpeningScreen();
     renderPage();
     anonymousSigninSetup();
     allListeners();
@@ -201,7 +214,7 @@ function newPageOpener() {
     //signOutButton.setAttribute("hidden", "true");
     signInAnon.setAttribute("hidden", "true");
   });
-  document.body.appendChild(signInAnon);
+  wrapper.appendChild(signInAnon);
 }
 // */
 // initialize page
@@ -213,4 +226,4 @@ const app = initializeApp(firebaseAppConfig);
 const db = getFirestore(app);
 initFirebaseAuth();
 
-export { saveProjects };
+export { saveProjects, signOutButton };
