@@ -16,6 +16,7 @@ import {
   onAuthStateChanged,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
   signOut,
   signInAnonymously,
 } from "firebase/auth";
@@ -48,18 +49,22 @@ import { parseDataToProjectsTodos, parseProjectsToJSON } from "./saveToDrive";
 async function signIn() {
   // Sign in Firebase using popup auth and Google as the identity provider.
   var provider = new GoogleAuthProvider();
-  await signInWithPopup(getAuth(), provider);
-  await collectProjects();
+  try {
+    await signInWithRedirect(getAuth(), provider);
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 // Signs-out of Friendly Chat.
-function signOutUser() {
-  // Sign out of Firebase.
-  signOut(getAuth());
-  while (projects[0]) {
-    projects.pop();
+export const signOutUser = async () => {
+  try {
+    await getAuth().signOut();
+    console.log("User signed out successfully");
+  } catch (error) {
+    console.log(error);
   }
-}
+};
 
 // Initialize firebase auth
 function initFirebaseAuth() {
@@ -68,6 +73,8 @@ function initFirebaseAuth() {
 }
 function authStateObserver(user) {
   if (user) {
+    collectProjects();
+
     // User is signed in!
     // Get the signed-in user's profile pic and name.
     var profilePicUrl = getProfilePicUrl();
@@ -90,12 +97,9 @@ function authStateObserver(user) {
     //saveMessagingDeviceToken();
   } else {
     // User is signed out!
-    // Hide user's profile and sign-out button.
-    //userNameElement.setAttribute("hidden", "true");
-    //userPicElement.setAttribute("hidden", "true");
-    //signOutButtonElement.setAttribute("hidden", "true");
-    // Show sign-in button.
-    // signInButtonElement.removeAttribute("hidden");
+    while (projects[0]) {
+      projects.pop();
+    }
   }
 }
 
