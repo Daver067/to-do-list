@@ -142,7 +142,6 @@ async function collectProjects() {
     for (let i = 0; i < newProjects.length; i++) {
       projects.push(newProjects[i]);
     }
-    // cant reassign projects... need to fix this
     clearOpeningScreen();
     renderPage();
     allListeners();
@@ -151,6 +150,7 @@ async function collectProjects() {
   } else {
     // doc.data() will be undefined in this case
     console.log("No such document!");
+    clearOpeningScreen();
     renderPage();
     anonymousSigninSetup();
     allListeners();
@@ -213,10 +213,6 @@ function newPageOpener() {
     allListeners();
     General.toggleActive();
     checkForActiveProject();
-    // hide the buttons
-    signInButton.setAttribute("hidden", "true");
-    //signOutButton.setAttribute("hidden", "true");
-    signInAnon.setAttribute("hidden", "true");
   });
   wrapper.appendChild(signInAnon);
 }
